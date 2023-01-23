@@ -1,5 +1,3 @@
-import {users, posts} from './data.js';
-
 import {
   obtenerUsuarios,
   crearUsuario,
