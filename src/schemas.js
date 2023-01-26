@@ -6,7 +6,9 @@ import {
   obtenerPostById,
   meGustaPost,
   crearComentario,
-  eliminarComentario
+  eliminarComentario,
+  obtenerPostsUsuario,
+  usuarioLike
 } from './mongo/models/controller.js';
 
 export const typeDefs = `#graphql
@@ -44,13 +46,15 @@ export const typeDefs = `#graphql
     posts: [Post]
     postById(postId: String): Post
     users: [User]
+    userPosts(userId: String): [Post] 
+    userLike(userId: String, postId: String): Boolean
   }
 
   type Mutation {
     addUser(name: String, email: String, picture: String): User
 
     addPost(userId: String, text: String, image: String): Post
-    likePost(userId: String, postId: String): [Like]
+    likePost(userId: String, postId: String): [Like]  
 
     addComment(userId: String, postId: String, comment: String): [Comment]
     removeComment(userId: String, postId: String, commentId: String): [Comment]
@@ -61,7 +65,9 @@ export const resolvers = {
   Query:{
     users: async () => await obtenerUsuarios(),
     posts: async () => await obtenerPosts(),
-    postById: async (_, {postId}) => await obtenerPostById(postId)
+    postById: async (_, {postId}) => await obtenerPostById(postId),
+    userPosts: async (_, {userId}) => await obtenerPostsUsuario(userId),
+    userLike: async (_, {userId, postId}) => await usuarioLike(userId, postId)
   },
   Mutation:{
 

@@ -65,6 +65,40 @@ export async function obtenerPostById(postId) {
   }
 }
 
+// obtener todos los post de un usuario
+
+export async function obtenerPostsUsuario(userId) {
+  try {
+
+    const posts = await Post.find({user: userId})
+  
+    const newPost = posts.map(async post=>{
+      return await obtenerPostById(post.id)
+    })
+  
+    return newPost
+
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+// saber si un usuario a dado like
+
+export async function usuarioLike(userId, postId) {
+  try {
+
+    const likeArr = await Like.find({user: userId, postId: postId})
+  
+    return likeArr.length === 0 ? false : true
+
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
 
 // crear post
 export async function crearPost(userId, text, image) {
