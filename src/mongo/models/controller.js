@@ -25,6 +25,11 @@ export async function obtenerUsuarios () {
   return await User.find()
 }
 
+//obtener un usuario por id
+export async function usuarioPorId (userId) {
+  return await User.findById(userId)
+}
+
 // obtener posts
 export async function obtenerPosts() {
   const posts = await Post.find().populate("user")
@@ -89,9 +94,8 @@ export async function obtenerPostsUsuario(userId) {
 export async function usuarioLike(userId, postId) {
   try {
 
-    const likeArr = await Like.find({user: userId, postId: postId})
-  
-    return likeArr.length === 0 ? false : true
+    const likeArr = await Like.find({user: userId, postId: postId}).populate("user")
+    return likeArr
 
   } catch (error) {
     console.log(error)
